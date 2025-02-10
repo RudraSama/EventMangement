@@ -11,6 +11,8 @@ const Events = ()=>{
 
     const API_URL = import.meta.env.VITE_API_URL;
 
+    console.log(API_URL);
+
     const [events, setEvents] = useState([]);
     const [category, setCategory] = useState("");
     const [startDate, setStartDate] = useState("");
@@ -34,6 +36,7 @@ const Events = ()=>{
             const res = await axios.get(API_URL+"/api/getEvents", { params });
 
             if(res.data){
+                console.log(res.data);
                 setEvents(res.data);
             }
         } catch (error) {
