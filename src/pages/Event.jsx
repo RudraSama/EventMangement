@@ -37,7 +37,7 @@ const Event = ()=>{
 
 
             data.event_id = slug,
-            data.user_id: user._id
+            data.user_id = user._id
 
             socket.emit('joinEvent', data);
         }
