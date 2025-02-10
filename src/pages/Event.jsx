@@ -28,18 +28,20 @@ const Event = ()=>{
     useEffect(()=>{
         fetchEvent();
 
-        socket.on('eventUpdated', (data)=>{
-            if(data.event_id === slug)
-                setOnlineAttendies(data.count);
-        });
+        let data = {};
+        if(user){
+            socket.on('eventUpdated', (data)=>{
+                if(data.event_id === slug)
+                    setOnlineAttendies(data.count);
+            });
 
 
-        const data = {
-            event_id: slug,
-            user_id: user?._id
+            data.event_id = slug,
+            data.user_id: user._id
+
+            socket.emit('joinEvent', data);
         }
 
-        socket.emit('joinEvent', data);
 
         return ()=>{
             socket.emit('leaveEvent', data);
