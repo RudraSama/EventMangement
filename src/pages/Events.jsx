@@ -32,7 +32,10 @@ const Events = ()=>{
             }
 
             const res = await axios.get(API_URL+"/api/getEvents", { params });
-            setEvents(res.data);
+
+            if(res.data){
+                setEvents(res.data);
+            }
         } catch (error) {
             console.error("Error fetching events:", error);
         }
