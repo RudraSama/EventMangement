@@ -1,0 +1,26 @@
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.hideNavBar{
+    display: none;
+}
+
+.eventListResponsive{
+    flex-direction: column;
+}
+
+
+@media (min-width: 48rem){
+    .hideNavBar{
+        display: flex;
+        color: red;
+    }
+
+    .eventListResponsive{
+        flex-direction: row;
+    }
+}
+
+
