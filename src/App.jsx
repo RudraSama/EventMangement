@@ -13,6 +13,7 @@ function App() {
   return (
       <AuthProvider>
         <Routes>
+            <Route path="*" element={<Home/>} />
             <Route path="/" element={<Home/>} />
             <Route path="/events" element={<Events/>} />
             <Route path="/event/:slug" element={<Event/>} />
