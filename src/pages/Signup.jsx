@@ -1,11 +1,14 @@
-import {useState, useContext} from 'react';
+import {useState, useContext, useEffect} from 'react';
 import Layout from './../components/Layout';
+import {useNavigate} from 'react-router-dom';
 
 import AuthContext from './../providers/AuthContext';
 
 const Signup = () => {
 
-    const {signup} = useContext(AuthContext);
+    const {signup, authenticated, isLoading} = useContext(AuthContext);
+
+    const navigate = useNavigate();
 
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -28,6 +31,12 @@ const Signup = () => {
             }
         }
     };
+
+    useEffect(()=>{
+        if(authenticated){
+            navigate("/events");
+        }
+    }, [isLoading]);
 
     return (
         <Layout>

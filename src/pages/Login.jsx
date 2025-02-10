@@ -10,7 +10,7 @@ const Login = () => {
 
     const navigate = useNavigate();
 
-    const {login} = useContext(AuthContext);
+    const {login, authenticated, isLoading} = useContext(AuthContext);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -28,6 +28,12 @@ const Login = () => {
         }
 
     };
+
+    useEffect(()=>{
+        if(authenticated){
+            navigate("/events");
+        }
+    }, [isLoading]);
 
     return (
         <Layout>
