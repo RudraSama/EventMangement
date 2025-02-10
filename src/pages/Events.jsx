@@ -67,9 +67,11 @@ const Events = ()=>{
                 </div>
 
                 <div className="eventListResponsive flex flex-wrap my-4 gap-4">
+                    {/*
                     {events.map((event, index)=>{
                         return <EventCard event={event} key={index} />
                     })}
+                    */}
                 </div>
             </main>
         </Layout>
