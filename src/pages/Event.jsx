@@ -30,6 +30,7 @@ const Event = ()=>{
 
         let data = {};
         if(user){
+            console.log(user);
             socket.on('eventUpdated', (data)=>{
                 if(data.event_id === slug)
                     setOnlineAttendies(data.count);

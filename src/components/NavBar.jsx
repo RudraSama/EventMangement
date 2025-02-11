@@ -30,8 +30,8 @@ const NavBar = ()=>{
 
                  {(authenticated)?(
                      <>
-                     <p className="text-gray-700">{user?.username}</p>
                      <button className="text-gray-700 hover:underline" onClick={handleLogout}>Logout</button>
+                     <p className="text-gray-700">{user?.username}</p>
                      </>
                  ):(
                      <>
