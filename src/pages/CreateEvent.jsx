@@ -5,6 +5,7 @@ import Layout from './../components/Layout';
 import AuthContext from './../providers/AuthContext';
 
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const CreateEvent = ()=>{
     
@@ -44,11 +45,14 @@ const CreateEvent = ()=>{
         formData.append("event_location", eventLocation);
         formData.append("event_banner", eventBanner); 
 
+        const token = Cookies.get("token");
+
 
         try {
             const res = await axios.post(API_URL+"/api/createEvent", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
+                     Authorization: `Bearer ${token}`
                 },
             });
 
