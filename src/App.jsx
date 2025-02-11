@@ -2,6 +2,7 @@ import {Routes, Route} from 'react-router-dom';
 import Events from './pages/Events';
 import Event from './pages/Event';
 import CreateEvent from './pages/CreateEvent';
+import EditEvent from './pages/EditEvent';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import {AuthProvider} from './providers/AuthContext';
@@ -20,6 +21,7 @@ function App() {
             <Route path="/login" element={<Login/>} />
             <Route path="/signup" element={<Signup/>} />
             <Route path="/event/create" element={<CreateEvent/>} />
+            <Route path="/event/edit/:slug" element={<EditEvent/>} />
         </Routes>
     </AuthProvider>
   )

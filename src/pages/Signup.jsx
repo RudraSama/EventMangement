@@ -10,6 +10,8 @@ const Signup = () => {
 
     const navigate = useNavigate();
 
+    const [loading, setLoading] = useState(false);
+
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -21,6 +23,7 @@ const Signup = () => {
         e.preventDefault();
         
         const data = {username: username, email: email, password: password};
+        setLoading(true);
         const res = await signup(data);
 
         if(res){
@@ -30,6 +33,7 @@ const Signup = () => {
                 setError(true);
             }
         }
+        setLoading(false);
     };
 
     useEffect(()=>{
@@ -85,7 +89,7 @@ const Signup = () => {
                     </div>
                     <div className="flex items-center justify-between">
                         <button type="submit" className="w-full sm:w-auto bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            Sign Up
+                            {loading?("Wait..."):"Singup"}
                         </button>
                     </div>
                 </form>

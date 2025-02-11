@@ -1,5 +1,6 @@
 import {useState, useEffect, useContext} from 'react';
-import {useNavigate} from 'react-router-dom';
+import {useParams, useNavigate} from 'react-router-dom';
+
 import Layout from './../components/Layout';
 
 import AuthContext from './../providers/AuthContext';
@@ -7,14 +8,16 @@ import AuthContext from './../providers/AuthContext';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const CreateEvent = ()=>{
+const EditEvent = ()=>{
     
     const {user, authenticated, isLoading} = useContext(AuthContext);
-    const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const API_URL = import.meta.env.VITE_API_URL;
+
+    const { slug } = useParams(); 
     
     const [eventName, setEventName] = useState('');
     const [eventDescription, setEventDescription] = useState('');
@@ -52,14 +55,17 @@ const CreateEvent = ()=>{
         try {
 
             setLoading(true);
-            const res = await axios.post(API_URL+"/api/createEvent", formData, {
+            const res = await axios.put(API_URL+"/api/editEvent/"+slug, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                      Authorization: `Bearer ${token}`
                 },
             });
 
-            setMessage(res.data.message);
+            if(res.data){
+                setMessage(res.data.message);
+            }
+
             setLoading(false);
 
         } catch (error) {
@@ -72,10 +78,37 @@ const CreateEvent = ()=>{
     }
 
     useEffect(()=>{
+
+        fetchEvent();
+
         if(!isLoading && !authenticated && !(user?.role === "admin")){
            navigate("/events");
         }
     }, [isLoading]);
+
+
+    const fetchEvent = async()=>{
+        try{
+            const res = await axios.get(API_URL+"/api/getEvent/"+slug, {
+            });
+
+            if(res.data){
+                setEventName(res.data.eventName);
+                setEventDescription(res.data.eventDescription);
+                setEventCategory(res.data.eventCategory);
+
+                const dateTime = new Date(res.data.eventDate);
+                setEventDate(dateTime.toISOString().slice(0, 16));
+
+                setEventLocation(res.data.eventLocation);
+                setEventBannerUrl(res.data.eventBannerUrl);
+            }
+
+        } catch (error) {
+            console.error("Error fetching events:", error);
+        }
+    }
+
 
 
     if(isLoading){
@@ -177,8 +210,10 @@ const CreateEvent = ()=>{
 
                                <div className="flex items-center justify-between">
                            <button type="submit" className="w-full sm:w-auto bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                               {loading?("Wait..."):"Create Event"}
+                               {loading?("Wait..."):"Edit Event"}
+                               
                            </button>
+                            
                        </div>
                </form>
             </div>
@@ -186,4 +221,4 @@ const CreateEvent = ()=>{
     );
 }
 
-export default CreateEvent;
+export default EditEvent;

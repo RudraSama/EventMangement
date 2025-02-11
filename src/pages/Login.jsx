@@ -12,6 +12,8 @@ const Login = () => {
 
     const {login, authenticated, isLoading} = useContext(AuthContext);
 
+    const[loading, setLoading] = useState(false);
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -23,7 +25,10 @@ const Login = () => {
         e.preventDefault();
 
         const data = {email: email, password: password};
+
+        setLoading(true);
         const res = await login(data);
+        setLoading(false);
 
         if(res.login){
             navigate("/events");
@@ -74,7 +79,7 @@ const Login = () => {
                     </div>
                     <div className="flex items-center justify-between">
                         <button type="submit" className="w-full sm:w-auto bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            Login
+                            {loading?("Wait..."):"Login"}
                         </button>
                     </div>
                 </form>

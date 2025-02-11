@@ -1,5 +1,5 @@
 import {useState, useEffect, useContext} from 'react';
-import {useParams, useNavigate} from 'react-router-dom';
+import {useParams, useNavigate, Link} from 'react-router-dom';
 
 import AuthContext from './../providers/AuthContext';
 
@@ -144,7 +144,11 @@ const Event = ()=>{
             <div className="relative my-5 mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
 
                 {(user?.role === "admin")?(
-                    <button onClick={deleteEvent} className="absolute right-1 top-1 bg-red-500 text-white py-2 px-6 rounded-lg text-xl hover:bg-red-700 transition duration-300">Delete</button>
+                    <div className="flex flex-col gap-2 absolute right-1 top-1">
+                        <Link to={"/event/edit/"+slug} className="text-center bg-blue-400 text-white py-2 px-6 rounded-lg text-xl hover:bg-blue-600 transition duration-300">Edit</Link>
+
+                        <button onClick={deleteEvent} className="bg-red-500 text-white py-2 px-6 rounded-lg text-xl hover:bg-red-700 transition duration-300">Delete</button>
+                    </div>
                 ):""}
 
                 <img className="w-full h-96 object-cover" src={event.eventBannerUrl} alt="Event Image" />
