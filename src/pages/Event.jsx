@@ -1,5 +1,5 @@
 import {useState, useEffect, useContext} from 'react';
-import {useParams} from 'react-router-dom';
+import {useParams, useNavigate} from 'react-router-dom';
 
 import AuthContext from './../providers/AuthContext';
 
@@ -14,6 +14,7 @@ const Event = ()=>{
     
     const API_URL = import.meta.env.VITE_API_URL;
     const {user, isLoading, authenticated} = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const [event, setEvent] = useState({});
     const [message, setMessage] = useState('');
@@ -29,8 +30,8 @@ const Event = ()=>{
         fetchEvent();
 
         let data = {};
+
         if(user){
-            console.log(user);
             socket.on('eventUpdated', (data)=>{
                 if(data.event_id === slug)
                     setOnlineAttendies(data.count);
@@ -49,7 +50,6 @@ const Event = ()=>{
             socket.off("eventUpdated");
 
             socket.disconnect();
-            console.log("out");
         }
     },[isLoading, registered]);
 
@@ -111,6 +111,25 @@ const Event = ()=>{
 
     }
 
+    const deleteEvent = async()=>{
+        try{
+            const token = Cookies.get("token");
+
+            const res = await axios.post(API_URL+"/api/deleteEvent/"+event._id,{}, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            if(res.data.deleted){
+                navigate("/events");
+            }
+
+        }
+        catch(error){
+            console.error("Error fetching events:", error);
+        }
+
+    }
+
     const getFormattedDate = (date)=>{
 
         if(!date){
@@ -124,7 +143,11 @@ const Event = ()=>{
 
     return (
         <Layout>
-            <div className="my-5 mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+            <div className="relative my-5 mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+
+                {(user?.role === "admin")?(
+                    <button onClick={deleteEvent} className="absolute right-1 top-1 bg-red-500 text-white py-2 px-6 rounded-lg text-xl hover:bg-red-700 transition duration-300">Delete</button>
+                ):""}
 
                 <img className="w-full h-96 object-cover" src={event.eventBannerUrl} alt="Event Image" />
 
