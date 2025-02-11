@@ -48,8 +48,6 @@ const Event = ()=>{
         return ()=>{
             socket.emit('leaveEvent', data);
             socket.off("eventUpdated");
-
-            socket.disconnect();
         }
     },[isLoading, registered]);
 
