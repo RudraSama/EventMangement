@@ -44,14 +44,15 @@ export const AuthProvider = ({ children }) => {
                 setUser(res.data.user);
                 setLoading(false);
                 setAuthenticated(true);
-                return true;
+                return {login: true};
             }
         }
         catch(error){
             console.error("Error while loging", error);
+            return {message: error.response.data.message, error: true};
         }
 
-        return false;
+        return {};
     }
 
     const signup = async (details)=>{

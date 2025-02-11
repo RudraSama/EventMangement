@@ -15,16 +15,22 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const [message, setMessage] = useState('');
+
     const API_URL = import.meta.env.VITE_API_URL;
 
     const handleLoginSubmit = async(e) => {
         e.preventDefault();
 
         const data = {email: email, password: password};
-        const isLogin = await login(data);
+        const res = await login(data);
 
-        if(isLogin){
+        if(res.login){
             navigate("/events");
+        }
+
+        if(res.error){
+            setMessage(res.message);
         }
 
     };
@@ -40,6 +46,7 @@ const Login = () => {
         <div className="flex items-center justify-center min-h-screen">
             <div className="w-full max-w-md p-8 bg-white shadow-lg rounded-lg">
                 <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
+                <p className="text-xl text-red-500">{message}</p>
                 <form onSubmit={handleLoginSubmit}>
                     <div className="mb-4">
                         <label htmlFor="email" className="block text-lg font-medium text-gray-700">Email</label>

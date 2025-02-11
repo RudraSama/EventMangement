@@ -47,9 +47,11 @@ const Event = ()=>{
         return ()=>{
             socket.emit('leaveEvent', data);
             socket.off("eventUpdated");
+
+            socket.disconnect();
             console.log("out");
         }
-    },[isLoading]);
+    },[isLoading, registered]);
 
     const alreadyRegistered = (attendies)=>{
         return attendies.includes(user?._id);
@@ -109,6 +111,17 @@ const Event = ()=>{
 
     }
 
+    const getFormattedDate = (date)=>{
+
+        if(!date){
+            return "";
+        }
+
+        const d = new Date(date);
+        return d.toDateString();
+        
+    }
+
     return (
         <Layout>
             <div className="my-5 mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
@@ -116,11 +129,10 @@ const Event = ()=>{
                 <img className="w-full h-96 object-cover" src={event.eventBannerUrl} alt="Event Image" />
 
                 <div className="px-8 py-6">
-                    {onlineAttendies}
                     <h1 className="text-4xl font-semibold text-gray-800">{event.eventName}</h1>
 
                     <div className="flex justify-between items-center mt-4">
-                        <p className="text-gray-600 text-lg">{event.eventDate}</p>
+                        <p className="text-gray-600 text-lg">{getFormattedDate(event.eventDate)}</p>
                         <p className="bg-green-100 text-green-800 py-1 px-3 rounded-full text-sm">{event.eventCategory}</p>
                     </div>
 
@@ -133,7 +145,7 @@ const Event = ()=>{
                         <p className="text-gray-700">{event.eventLocation}</p>
                     </div>
 
-                    <div className="mt-8">
+                    <div className="flex justify-between mt-8">
                         {(authenticated && !registered)?(
                             <button onClick={registerToEvent} className="bg-blue-600 text-white py-2 px-6 rounded-lg text-xl hover:bg-blue-700 transition duration-300">Register Now</button>
                         ):""}
@@ -142,9 +154,12 @@ const Event = ()=>{
                             <button onClick={unregisterToEvent} className="bg-gray-600 text-white py-2 px-6 rounded-lg text-xl">UnRegister</button>
                         ):""}
 
-                        {(message)?(
-                            <p className="text-green-500">{message}</p>
-                        ):""}
+                        <div>
+                            <p>Total Registrations : {event.eventAttendies?.length}</p>
+                            {registered?(
+                                <p>Live Attendies: {onlineAttendies}</p>
+                            ):""}
+                        </div>
                     </div>
                 </div>
             </div>
