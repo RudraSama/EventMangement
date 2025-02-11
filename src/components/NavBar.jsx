@@ -29,6 +29,7 @@ const NavBar = ()=>{
                  <Link to="/events" className="text-gray-700 hover:underline">Events</Link>
 
                  {(authenticated)?(
+                     <p className="text-gray-700">{user?.username}</p>
                      <button className="text-gray-700 hover:underline" onClick={handleLogout}>Logout</button>
                  ):(
                      <>
